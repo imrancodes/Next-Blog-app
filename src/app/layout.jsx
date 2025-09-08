@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata = {
   title: "Blog App",
@@ -9,13 +10,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased `}
-      >
-        <header>
-          <Navbar />
-        </header>
-        {children}
+      <body className={`antialiased`}>
+        <Providers>
+          <header>
+            <Navbar />
+          </header>
+          {children}
+        </Providers>
       </body>
     </html>
   );
