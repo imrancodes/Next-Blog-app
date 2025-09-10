@@ -20,6 +20,9 @@ const Navbar = () => {
             <li className="hover:text-black">
               <Link href="/blogs">Blogs</Link>
             </li>
+            <li className="hover:text-black">
+              <Link href="/my-blogs">My Blogs</Link>
+            </li>
           </ul>
           <div className="bg-white rounded-lg px-4 text-black font-semibold">
             <Link href="/blogs/new">+ Add Blog</Link>

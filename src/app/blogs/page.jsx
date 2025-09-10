@@ -1,20 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
-    }
-  }, [status, router]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -31,34 +22,30 @@ export default function BlogPage() {
         setLoading(false);
       }
     };
-    if (status === "authenticated") {
-      fetchBlogs();
-    }
-  }, [status]);
-
-  if (status === "loading" || loading) {
-    return <p>Loading...</p>;
-  }
+    fetchBlogs();
+  }, []);
 
   return (
-    <div className="m-10">
-      <h1 className="text-center text-4xl font-bold">All Blogs</h1>
-      <div className="grid grid-cols-4">
-        {blogs.map((blog) => (
-          <div
-            key={blog._id}
-            className="bg-blue-600 m-10 text-white p-8 rounded-2xl cursor-pointer hover:scale-110 transition"
-          >
-            <Link href={`/blogs/${blog._id}`}>
-              <h1 className="font-bold pb-5 text-black text-xl">
-                {blog.title}
-              </h1>
-              <p className="truncate">{blog.body}</p>
-              <p className="text-sm pt-4 text-gray-300">By {blog.author}</p>
-            </Link>
-          </div>
-        ))}
+    <ProtectedRoute>
+      <div className="m-10">
+        <h1 className="text-center text-4xl font-bold">All Blogs</h1>
+        <div className="grid grid-cols-4">
+          {blogs.map((blog) => (
+            <div
+              key={blog._id}
+              className="bg-blue-600 m-10 text-white p-8 rounded-2xl cursor-pointer hover:scale-110 transition"
+            >
+              <Link href={`/blogs/${blog._id}`}>
+                <h1 className="font-bold pb-5 text-black text-xl">
+                  {blog.title}
+                </h1>
+                <p className="truncate">{blog.body}</p>
+                <p className="text-sm pt-4 text-gray-300">By {blog.author}</p>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }
