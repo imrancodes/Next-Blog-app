@@ -10,10 +10,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`,
-          { cache: "no-store" }
-        );
+        const res = await fetch(`api/posts`, { cache: "no-store" });
         const data = await res.json();
         setBlogs(data);
       } catch (err) {

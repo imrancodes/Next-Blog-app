@@ -20,10 +20,7 @@ export default function EditBlogPage({ params }) {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${id}`,
-          { cache: "no-store" }
-        );
+        const res = await fetch(`/api/posts/${id}`, { cache: "no-store" });
         const data = await res.json();
         setTitle(data.title);
         setContent(data.body);
@@ -45,14 +42,11 @@ export default function EditBlogPage({ params }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, content, image }),
-        }
-      );
+      const res = await fetch(`/api/posts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, content, image }),
+      });
       await res.json();
       setEdit(false);
     } finally {
@@ -62,12 +56,9 @@ export default function EditBlogPage({ params }) {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const res = await fetch(`/api/posts/${id}`, {
+      method: "DELETE",
+    });
     if (res.ok) {
       router.push("/blogs");
     } else {
@@ -95,7 +86,7 @@ export default function EditBlogPage({ params }) {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
+    const res = await fetch(`/api/upload`, {
       method: "POST",
       body: formData,
     });

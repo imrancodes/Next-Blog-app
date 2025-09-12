@@ -10,10 +10,7 @@ const MyBlogs = () => {
   useEffect(() => {
     const fetchMyBlogs = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/my-posts`,
-          { cache: "no-store" }
-        );
+        const res = await fetch(`/api/my-posts`, { cache: "no-store" });
         const data = await res.json();
         if (Array.isArray(data)) {
           setMyBlogs(data);

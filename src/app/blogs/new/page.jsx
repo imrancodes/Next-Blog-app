@@ -12,7 +12,7 @@ const CreateBlog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
+      const res = await fetch(`/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, content, image }),
@@ -42,13 +42,10 @@ const CreateBlog = () => {
       const formData = new FormData();
       formData.append("image", file);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`/api/upload`, {
+        method: "POST",
+        body: formData,
+      });
 
       const uploadImageUrl = await res.json();
       setImage(uploadImageUrl.url);
