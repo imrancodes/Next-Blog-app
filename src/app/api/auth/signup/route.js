@@ -1,6 +1,6 @@
 import USER from "@/models/user";
 import { connectDB } from "@/lib/db";
-import { NextResponse } from "next/server";
+import {corsResponse} from "@/lib/cors" 
 import bcrypt from "bcrypt";
 
 export async function POST(req) {
@@ -15,12 +15,9 @@ export async function POST(req) {
       password: hashPassword,
     });
 
-    return NextResponse.json({ msg: "User created succesfully", user });
+    return corsResponse(user);
   } catch (err) {
     console.error("API Error:", err);
-    return NextResponse.json(
-      { error: "Failed to create user" },
-      { status: 500 }
-    );
+    return corsResponse({ error: "Failed to create user" }, 500);
   }
 }

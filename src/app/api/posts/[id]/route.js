@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/db";
 import BLOG from "@/models/blog";
-import { NextResponse } from "next/server";
+import {corsResponse} from "@/lib/cors" 
 
 export async function GET(req, { params }) {
   try {
@@ -8,15 +8,12 @@ export async function GET(req, { params }) {
     const { id } = params;
     const blog = await BLOG.findById(id);
     if (!blog) {
-      return NextResponse.json({ error: "Blog not found" });
+      return corsResponse({ error: "Blog not found" });
     }
-    return NextResponse.json(blog);
+    return corsResponse(blog);
   } catch (err) {
     console.error("API Error:", err);
-    return NextResponse.json(
-      { error: "Failed to fetch blog" },
-      { status: 500 }
-    );
+    return corsResponse({ error: "Failed to fetch blog" }, 500);
   }
 }
 
@@ -35,14 +32,11 @@ export async function PATCH(req, { params }) {
     );
 
     if (!blog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+      return corsResponse({ error: "Blog not found" }, 404);;
     }
-    return NextResponse.json({ msg: "Blog Update Successfully", blog });
+    return corsResponse(blog);
   } catch (err) {
-    return NextResponse.json(
-      { error: "Failed to update blog" },
-      { status: 500 }
-    );
+    return corsResponse({ error: "Failed to update blog" }, 500);
   }
 }
 
@@ -51,11 +45,9 @@ export async function DELETE(req, { params }) {
     await connectDB();
     const { id } = params;
     await BLOG.findByIdAndDelete(id);
-    return NextResponse.json({ msg: "Blog Delete Successfully" });
+   return corsResponse({ msg: "Blog Delete Successfully" }, 200);
+
   } catch (err) {
-    return NextResponse.json(
-      { error: "Failed to delete blog" },
-      { status: 500 }
-    );
+    return corsResponse({ error: "Failed to delete blog" }, 500);
   }
 }

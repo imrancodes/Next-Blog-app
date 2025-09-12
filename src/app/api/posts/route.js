@@ -1,20 +1,17 @@
 import BLOG from "@/models/blog";
 import { connectDB } from "@/lib/db";
-import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
+import {corsResponse} from "@/lib/cors" 
 
 export async function GET() {
   try {
     await connectDB();
     const blogs = await BLOG.find({});
-    return NextResponse.json(blogs);
+    return corsResponse(blogs);
   } catch (error) {
     console.error("API Error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch blogs" },
-      { status: 500 }
-    );
+    return corsResponse({ error: "Failed to fetch blogs" }, 500);
   }
 }
 
@@ -24,7 +21,7 @@ export async function POST(req) {
 
     const session = await getServerSession(authOptions);
     if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return corsResponse({ error: "Unauthorized" }, 401);
     }
 
     const { title, content, image } = await req.json();
@@ -35,11 +32,8 @@ export async function POST(req) {
       author: session.user.name,
       userId: session.user.id,
     });
-    return NextResponse.json({ msg: "success", blog: result });
+    return corsResponse(result);
   } catch (err) {
-    return NextResponse.json(
-      { error: "Failed to create blog" },
-      { status: 500 }
-    );
+   return corsResponse({ error: "Failed to create blogs" }, 500);
   }
 }

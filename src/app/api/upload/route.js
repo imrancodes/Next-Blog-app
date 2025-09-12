@@ -1,7 +1,5 @@
-import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
-import formidable from "formidable";
-import fs from "fs";
+import {corsResponse} from "@/lib/cors" 
 
 export const config = {
   api: {
@@ -20,8 +18,8 @@ export async function POST(req) {
     const formData = await req.formData();
     const file = formData.get("image");
 
-     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    if (!file) {
+      return corsResponse({ error: "No file provided" }, 400);
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -33,10 +31,9 @@ export async function POST(req) {
       });
       uploadStream.end(buffer);
     });
-
-    return NextResponse.json({ url: result.secure_url });
+    return corsResponse({ url: result.secure_url });
   } catch (err) {
     console.error("Upload error:", err);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    return corsResponse({ error: "Upload failed" }, 500);
   }
 }
