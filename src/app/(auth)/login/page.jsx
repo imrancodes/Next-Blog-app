@@ -50,6 +50,7 @@ export default function SignInPage() {
             className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
             value={email}
             onChange={(e)=>setEmail(e.target.value)}
+            placeholder="Enter Your Email"
             required
           />
         </div>
@@ -61,6 +62,7 @@ export default function SignInPage() {
             className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
+            placeholder="Enter Your Password"
             required
           />
         </div>

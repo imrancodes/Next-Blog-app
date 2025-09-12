@@ -27,10 +27,11 @@ export async function POST(req) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { title, content } = await req.json();
+    const { title, content, image } = await req.json();
     const result = await BLOG.create({
       title,
       body: content,
+      image,
       author: session.user.name,
       userId: session.user.id,
     });
